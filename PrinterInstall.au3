@@ -1,6 +1,7 @@
 #comments-start
+
 @Auth: Gabriel Rodriguez
-Program: Printer Install Automate
+Program: Printer Installer
 Year: 2017
 
 #comments-end
@@ -16,13 +17,25 @@ Year: 2017
 #include <GUIConstantsEx.au3>
 #include <GuiMenu.au3>
 #include <WinAPI.au3>
+
+; Require admin is used to gain elevated access 
 #RequireAdmin
 
+; needed to compile script 
 #pragma compile(AutoItExecuteAllowed, True)
+
+#comments-start
+$drivers - PATH to your driver files
+$ $nscInf - Change this value to point to your driver files and name it whatever you want(remember to update these values throughout the script
+$driver_7270 and _3325 - change these values to point to the spacific printer drivers that you need, you can add as many as you need to accomplish your task
+loc[] - is an array of printer names
+$ip - is needed to map your ip to the specific printer 
+$printer[] - is the name the driver file referse to the printer by you can get this from the inf file
+#comments-end
+
 
 ; Global variables for drivers and scripts as well as printer names, IP addresses and printer driver information from the .inf files
 Global $drivers = "C:\DRIVERS"
-Global $scripts = "C:\SCRIPTS"
 Global $nscInf = "CNLB0UA64.inf"
 Global $driver_7270 = "C:\LaptopBuild\C7270"
 Global $driver_3325 = "C:\LaptopBuild\IRC3325"
@@ -44,11 +57,14 @@ Global $next = False
 Global $prog
 
 ; Global variables for drivers and scripts as well as printer names, IP addresses and printer driver information from the .inf files GSU
-Global $drivers = "C:\DRIVERS"
-Global $scripts = "C:\SCRIPTS"
-Global $gsuInf = "eSf6u.inf"
-Global $driver_3505 = "C:\LaptopBuild\a3505"
-Global $loc3[] = ["Fremont", "Sacamento", "Sacramento Trailor", "One Fiber Trailer","Selma"]
+#comments-start
+
+
+#comments-end
+Global $drivers = "C:\DRIVERS" ; change this to point to your drivers
+Global $gsuInf = "eSf6u.inf" ;change this to point to your INF file in the drivers folder
+Global $driver_3505 = "C:\LaptopBuild\a3505" : points to driver used for spacific printer 
+Global $loc3[] = ["Fremont", "Sacamento", "Sacramento Trailor", "One Fiber Trailer","Selma"] ; these ill contain an array of 
 Global $ip3[] = ['10.54.116.42','10.54.11.194', '10.54.11.196', '10.54.121.194', '10.54.118.5']
 Global $printer3 = "TOSHIBA Universal Printer 2"
 Global $bArray[2] = []
@@ -58,13 +74,15 @@ Global $uninstall
 LapTopBuild()
 
 ; GUI to display options to user
+; change GUI values here to display any message you like
+
 Func LapTopBuild()
    Opt("GUIOnEventMode", 1)
    Opt("GUIResizeMode", 1)
 
    Local $hGUI = GUICreate("Laptop Build", 300, 200)
 
-   Local $label = GUICtrlCreateLabel("Select an option from below", 30, 12,280)
+   Local $label = GUICtrlCreateLabel("Select an option from below", 30, 12,280) 
    GUICtrlSetFont($label, 11, $FW_Bold,$GUI_FONTUNDER)
 
    GUISetOnEvent($GUI_EVENT_CLOSE, "SpecialEvents")
@@ -102,7 +120,7 @@ Func LapTopBuild()
    WEnd
 EndFunc
 
-;Iterate over array to find selected radio
+;Iterate over array to find selected radio in GUI
 Func CheckChoice()
    FOR $j = 0 to 1 step 1
 	  Local $iState = _GUICtrlButton_GetCheck($bArray[$j])
